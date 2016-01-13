@@ -1,0 +1,19 @@
+public class Solution
+{
+    public static void main(String[] args) throws IOException
+    {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        FileInputStream fileInputStream = new FileInputStream(reader.readLine());
+        ArrayList<Integer>list= new ArrayList<>();
+        while (fileInputStream.available()!=0){
+            Byte a = (byte) fileInputStream.read();
+            System.out.println(a);
+
+        }
+
+        for(int a :list){
+            System.out.println(a);
+        }
+
+    }
+}//                      C:\\Файлы\\doc.txt
