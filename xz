@@ -4,16 +4,27 @@ public class Solution
     {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         FileInputStream fileInputStream = new FileInputStream(reader.readLine());
+        reader.close();
         ArrayList<Integer>list= new ArrayList<>();
+        byte[] mas = new byte[fileInputStream.available()];
+        int count= 0;
         while (fileInputStream.available()!=0){
-            Byte a = (byte) fileInputStream.read();
-            System.out.println(a);
-
+            mas[count] = (byte) fileInputStream.read();;
+            count++;
         }
-
-        for(int a :list){
-            System.out.println(a);
+        fileInputStream.close();
+        String s = new String(mas);
+        char[]ch=s.toCharArray();
+        for (int i = 0; i <ch.length ; i++)
+        {
+            int integer=Character.getNumericValue(ch[i]);
+            list.add(integer);
         }
-
+        Collections.sort(list);
+        for(int a:list){
+            if(a%2==0){
+                System.out.println(a);
+            }
+        }
     }
-}//                      C:\\Файлы\\doc.txt
+}
