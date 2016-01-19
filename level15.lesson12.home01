@@ -1,3 +1,6 @@
+package com.javarush.test.level15.lesson12.home01;
+
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -17,7 +20,7 @@ public class Solution {
         while (true) {
             String s = reader.readLine();
             if (s.equals("exit")) break;
-            else if (doubleCheck(s)) {
+            else if (doubleCheck(s)&&s.contains(".")) {
                 print(Double.parseDouble(s));
             } else if (check(s)) {
                 int i=Integer.parseInt(s);
