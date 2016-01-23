@@ -1,0 +1,55 @@
+public class Test implements Runnable{
+    private static int counter = 1;
+    private static boolean isCansel=true;
+    public static void main(String[] args) throws InterruptedException, IOException {
+        BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+        Thread thread = new Thread(new Test());
+        System.out.println("Идет копирования файла");
+        System.out.println("Нажми Enter для отмены копирования");
+        System.out.println();
+
+        Bear bear = new Bear(100);
+        bear.writeFileBear();
+
+        thread.start();
+        String s = bf.readLine();
+        while (true) {
+            if (s.equals("")) {
+                thread.interrupt();
+                break;
+            }
+            if(!thread.isAlive()){
+                break;}
+        }if (!thread.isAlive()) {
+            System.out.println("Поздравляю! Файл скопирован!");
+        }
+    }
+
+        @Override
+        public void run() {
+            int i=1;
+            try {
+                BufferedWriter bw = new BufferedWriter(new FileWriter("C:\\JavaRushHomeWork\\src\\com\\javarush\\test\\test\\past.txt"));
+                BufferedReader br = new BufferedReader(new FileReader("C:\\JavaRushHomeWork\\src\\com\\javarush\\test\\test\\copy.txt"));
+                while(isCansel&&i!=101) {
+                    System.out.print("\r"+"Файл скопирован на " + i+"%");
+                    i++;
+                    counter++;
+                    String s = br.readLine();
+                    bw.write(s+"\n");
+                    bw.flush();
+                    if(isCansel==false)break;
+                    try {
+                        Thread.sleep(300);
+                    } catch (InterruptedException e) {
+                        System.out.println();
+                        System.out.println("Копирование отменено");
+                        isCansel = false;
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
