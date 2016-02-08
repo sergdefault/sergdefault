@@ -1,0 +1,87 @@
+package com.javarush.test.level15.lesson12.home09;
+
+/* Парсер реквестов
+Считать с консоли URl ссылку.
+Вывести на экран через пробел список всех параметров (Параметры идут после ? и разделяются &, например, lvl=15).
+URL содержит минимум 1 параметр.
+Если присутствует параметр obj, то передать его значение в нужный метод alert.
+alert(double value) - для чисел (дробные числа разделяются точкой)
+alert(String value) - для строк
+
+Пример 1
+Ввод:
+http://javarush.ru/alpha/index.html?lvl=15&view&name=Amigo
+Вывод:
+lvl view name
+
+Пример 2
+Ввод:
+http://javarush.ru/alpha/index.html?obj=3.14&name=Amigo
+Вывод:
+obj name
+double 3.14
+*/
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+
+public class Solution {
+    public static void main(String[] args) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        String s = reader.readLine();
+        String result="";
+        char[]ch=s.toCharArray();
+        for (int i = 0; i <ch.length ; i++) {
+            if(ch[i]=='?'){
+                for (int j = i+1; j <ch.length ; j++) {
+                    result+=ch[j];
+                }
+            }
+        }
+        String[]parametr=result.split("&");
+        ArrayList<String>param=new ArrayList<>();
+        ArrayList<String>objValue=new ArrayList<>();
+        for(String str:parametr){
+            char [] chArray = str.toCharArray();
+            String buffer="";
+            for (int i = 0; i <chArray.length ; i++) {
+             if(chArray[i]!='='){
+                 buffer+=chArray[i];
+             }else if(buffer.contains("obj")){}
+                else break;
+             }
+            if(buffer.contains("obj")){
+            param.add("obj");
+            StringBuilder sb= new StringBuilder(buffer);
+                sb.delete(0,3);
+                objValue.add(sb.toString());
+            }else{
+            param.add(buffer);
+            }
+            buffer="";
+        }
+        for(String paramS:param){
+            System.out.print(paramS+" ");
+        }
+        System.out.println();
+        for(String valueS:objValue){
+          try{
+            alert(Double.parseDouble(valueS));
+          }catch (Exception e){
+              alert(valueS);
+          }
+        }
+        reader.close();
+
+    }
+
+    public static void alert(double value) {
+        System.out.println("double " + value);
+    }
+
+    public static void alert(String value) {
+        System.out.println("String " + value);
+    }
+}
