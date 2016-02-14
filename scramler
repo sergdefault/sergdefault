@@ -1,0 +1,60 @@
+package com.javarush.test.level18.lesson10.bonus01;
+
+/* Шифровка
+Придумать механизм шифровки/дешифровки
+
+Программа запускается с одним из следующих наборов параметров:
+-e fileName fileOutputName
+-d fileName fileOutputName
+где
+fileName - имя файла, который необходимо зашифровать/расшифровать
+fileOutputName - имя файла, куда необходимо записать результат шифрования/дешифрования
+-e - ключ указывает, что необходимо зашифровать данные
+-d - ключ указывает, что необходимо расшифровать данные
+*/
+
+import java.io.*;
+
+public class Solution {
+    public static int key=12;
+    public static void main(String[] args) throws IOException {
+        if(args[0].equals("-e")){
+            scrambler(args[1],args[2]);
+        }else if(args[0].equals("-d")){
+            decoder(args[1],args[2]);
+        }else {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    public static void  scrambler(String fileInput,String fileOutput) throws IOException {
+        FileInputStream reader= new FileInputStream(fileInput);
+        FileOutputStream writer = new FileOutputStream(fileOutput);
+        int curentByte;
+        while (reader.available()!=0){
+            curentByte=reader.read();
+            writer.write(curentByte+key);
+        }
+        writer.flush();
+        writer.close();
+        reader.close();
+
+    }
+
+    public static void decoder(String fileInput,String fileOutput) throws IOException {
+        FileInputStream reader= new FileInputStream(fileInput);
+        FileOutputStream writer = new FileOutputStream(fileOutput);
+        int curentByte;
+        while (reader.available()!=0){
+            curentByte=reader.read();
+            writer.write(curentByte-key);
+        }
+        writer.flush();
+        writer.close();
+        reader.close();
+    }
+
+}
+
+// -e C:\Файлы\Idea\JavaRushHomeWork\src\com\javarush\test\level18\lesson10\bonus01\test C:\Файлы\Idea\JavaRushHomeWork\src\com\javarush\test\level18\lesson10\bonus01\test1
+// -d C:\Файлы\Idea\JavaRushHomeWork\src\com\javarush\test\level18\lesson10\bonus01\test1 C:\Файлы\Idea\JavaRushHomeWork\src\com\javarush\test\level18\lesson10\bonus01\test
