@@ -21,21 +21,19 @@ public class Solution {
     public static void main(String[] args) throws IOException {
         Map<Integer,String>map=new TreeMap<>();
         String tmp;
-        String output = null;
         while(!(tmp=reader.readLine()).equals("end")){
-            if(!(tmp.contains(".part"))){
-                output=tmp;
-            }else {
-                map.put(getIndex(tmp), tmp);
-            }
+            map.put(getIndex(tmp), tmp);
         }
-        int a = tmp.lastIndexOf("/");
-        File file = new File(tmp.substring(0,a),"Lion.avi");
+        
+        String s = map.values().iterator().next();
+        int a =s.lastIndexOf("/");
+        File file = new File(s.substring(0,a),"Lion.avi");
         file.createNewFile();
         FileOutputStream fos= new FileOutputStream(file,true);
+        
         for(Map.Entry<Integer, String> m:map.entrySet()){
             FileInputStream fis = new FileInputStream(m.getValue());
-            byte [] buffer=new byte[4096];
+            byte [] buffer=new byte[1024];
             int i;
             while(( i = fis.read(buffer))!=-1){
                 fos.write(buffer,0,i);
