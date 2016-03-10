@@ -17,16 +17,17 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class Solution {
-    static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
     public static void main(String[] args) throws IOException {
-        Map<Integer,String>map=new TreeMap<>();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        TreeMap<Integer,String>map=new TreeMap<>();
         String tmp;
         while(!(tmp=reader.readLine()).equals("end")){
             map.put(getIndex(tmp), tmp);
         }
-
+        reader.close();
         String s = map.values().iterator().next();
-        int a =s.lastIndexOf("/");
+        int a =s.lastIndexOf(File.separator);
         String filename = s.substring(a+1,s.lastIndexOf("."));
         File file = new File(s.substring(0,a),filename);
         file.createNewFile();
@@ -42,7 +43,6 @@ public class Solution {
             fos.flush();
             fis.close();
         }
-        reader.close();
         fos.close();
     }
 
