@@ -1,0 +1,61 @@
+package com.javarush.test.level18.lesson10.home10;
+
+/* Собираем файл
+Собираем файл из кусочков
+Считывать с консоли имена файлов
+Каждый файл имеет имя: [someName].partN. Например, Lion.avi.part1, Lion.avi.part2, ..., Lion.avi.part37.
+Имена файлов подаются в произвольном порядке. Ввод заканчивается словом "end"
+В папке, где находятся все прочтенные файлы, создать файл без приставки [.partN]. Например, Lion.avi
+В него переписать все байты из файлов-частей используя буфер.
+Файлы переписывать в строгой последовательности, сначала первую часть, потом вторую, ..., в конце - последнюю.
+Закрыть потоки. Не использовать try-with-resources
+*/
+
+import java.io.*;
+import java.util.Map;
+import java.util.TreeMap;
+
+public class Solution {
+    static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+    public static void main(String[] args) throws IOException {
+        Map<Integer,String>map=new TreeMap<>();
+        String tmp;
+        String output = null;
+        while(!(tmp=reader.readLine()).equals("end")){
+            if(!(tmp.contains(".part"))){
+                output=tmp;
+            }else {
+                map.put(getIndex(tmp), tmp);
+            }
+        }
+        String current = new java.io.File( "." ).getCanonicalPath();
+        File file = new File(current,"Lion.avi");
+        file.createNewFile();
+        FileOutputStream fos= new FileOutputStream(file,true);
+        for(Map.Entry<Integer, String> m:map.entrySet()){
+            FileInputStream fis = new FileInputStream(m.getValue());
+            byte [] buffer=new byte[64*1024];
+            int i;
+            while(( i = fis.read(buffer))!=-1){
+                fos.write(buffer);
+            }
+            fos.flush();
+            fis.close();
+        }
+        reader.close();
+        fos.close();
+    }
+
+    public static Integer getIndex(String filePatch){
+        char [] buffer=filePatch.toCharArray();
+        StringBuilder index=new StringBuilder();
+        try{
+            for (int i = buffer.length-1; i > 0  ; i--) {
+                int ind = Integer.parseInt(String.valueOf(buffer[i]));
+                index.append(ind);
+            }
+        }catch (IllegalArgumentException e){}
+        index.reverse();
+        return Integer.parseInt(index.toString());
+    }
+}
