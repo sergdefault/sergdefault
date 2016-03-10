@@ -7,7 +7,8 @@ package com.javarush.test.level18.lesson10.home10;
 Имена файлов подаются в произвольном порядке. Ввод заканчивается словом "end"
 В папке, где находятся все прочтенные файлы, создать файл без приставки [.partN]. Например, Lion.avi
 В него переписать все байты из файлов-частей используя буфер.
-Файлы переписывать в строгой последовательности, сначала первую часть, потом вторую, ..., в конце - последнюю.
+Файлы переписывать в строгой последовательности, сначала первую часть, потом вторую, ...,
+ в конце - последнюю.
 Закрыть потоки. Не использовать try-with-resources
 */
 
@@ -28,16 +29,16 @@ public class Solution {
                 map.put(getIndex(tmp), tmp);
             }
         }
-        String current = new java.io.File( "." ).getCanonicalPath();
-        File file = new File(current,"Lion.avi");
+        int a = tmp.lastIndexOf("/");
+        File file = new File(tmp.substring(0,a),"Lion.avi");
         file.createNewFile();
         FileOutputStream fos= new FileOutputStream(file,true);
         for(Map.Entry<Integer, String> m:map.entrySet()){
             FileInputStream fis = new FileInputStream(m.getValue());
-            byte [] buffer=new byte[64*1024];
+            byte [] buffer=new byte[4096];
             int i;
             while(( i = fis.read(buffer))!=-1){
-                fos.write(buffer);
+                fos.write(buffer,0,i);
             }
             fos.flush();
             fis.close();
