@@ -1,0 +1,57 @@
+package com.javarush.test.level19.lesson10.home03;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+/* Хуан Хуанович
+В метод main первым параметром приходит имя файла.
+В этом файле каждая строка имеет следующий вид:
+имя день месяц год
+где [имя] - может состоять из нескольких слов, разделенных пробелами, и имеет тип String
+[день] - int, [месяц] - int, [год] - int
+данные разделены пробелами
+
+Заполнить список PEOPLE импользуя данные из файла
+Закрыть потоки. Не использовать try-with-resources
+
+Пример входного файла:
+Иванов Иван Иванович 31 12 1987
+Вася 15 5 2013
+*/
+
+public class Solution {
+
+    public static final List<Person> PEOPLE = new ArrayList<Person>();
+    public static LinkedHashMap<String,String> param=new LinkedHashMap<>();
+
+    public static void main(String[] args) throws IOException, ParseException {
+        String path="/windows/Файлы/Idea/JavaRushHomeWork/src/com/javarush/test/level19/lesson10/home03/perso";
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MM yyyy");
+        BufferedReader reader = new BufferedReader(new FileReader(path));
+        while(reader.ready()){
+            addParametrToMap(reader.readLine());
+        }
+        reader.close();
+        for (Map.Entry<String,String > map: param.entrySet()){
+            PEOPLE.add(new Person(map.getKey(),sdf.parse(map.getValue())));
+        }
+        System.out.println(PEOPLE);
+    }
+    public static void addParametrToMap(String line) {
+        Matcher matcher = Pattern.compile("\\d+").matcher(line);
+        matcher.find();
+        int i = line.indexOf(matcher.group());
+        String name = line.substring(0,i);
+        String date = line.substring(i,line.length());
+        param.put(name.trim(),date.trim());
+    }
+
+}
+
