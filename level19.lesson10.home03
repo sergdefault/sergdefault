@@ -1,7 +1,6 @@
 package com.javarush.test.level19.lesson10.home03;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
@@ -33,18 +32,18 @@ public class Solution {
     public static void main(String[] args) throws IOException, ParseException {
         BufferedReader reader = new BufferedReader(new FileReader(args[0]));
         while(reader.ready()){
-            addPerson(reader.readLine());
+            PEOPLE.add(getPerson(reader.readLine()));
         }
         reader.close();
     }
-    public static void addPerson(String line) throws ParseException {
+    public static Person getPerson(String line) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("dd MM yyyy");
         Matcher matcher = Pattern.compile("\\d+").matcher(line);
         matcher.find();
         int i = line.indexOf(matcher.group());
         String name = line.substring(0,i);
         String date = line.substring(i,line.length());
-        PEOPLE.add(new Person(name.trim(),sdf.parse(date.trim())));
+        return new Person(name.trim(),sdf.parse(date.trim()));
     }
 
 }
