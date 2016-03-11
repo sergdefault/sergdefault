@@ -29,28 +29,22 @@ import java.util.regex.Pattern;
 public class Solution {
 
     public static final List<Person> PEOPLE = new ArrayList<Person>();
-    public static LinkedHashMap<String,String> param=new LinkedHashMap<>();
 
     public static void main(String[] args) throws IOException, ParseException {
-        String path="/windows/Файлы/Idea/JavaRushHomeWork/src/com/javarush/test/level19/lesson10/home03/perso";
-        SimpleDateFormat sdf = new SimpleDateFormat("dd MM yyyy");
-        BufferedReader reader = new BufferedReader(new FileReader(path));
+        BufferedReader reader = new BufferedReader(new FileReader(args[0]));
         while(reader.ready()){
-            addParametrToMap(reader.readLine());
+            addPerson(reader.readLine());
         }
         reader.close();
-        for (Map.Entry<String,String > map: param.entrySet()){
-            PEOPLE.add(new Person(map.getKey(),sdf.parse(map.getValue())));
-        }
-        System.out.println(PEOPLE);
     }
-    public static void addParametrToMap(String line) {
+    public static void addPerson(String line) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MM yyyy");
         Matcher matcher = Pattern.compile("\\d+").matcher(line);
         matcher.find();
         int i = line.indexOf(matcher.group());
         String name = line.substring(0,i);
         String date = line.substring(i,line.length());
-        param.put(name.trim(),date.trim());
+        PEOPLE.add(new Person(name.trim(),sdf.parse(date.trim())));
     }
 
 }
