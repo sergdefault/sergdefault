@@ -1,0 +1,77 @@
+package com.javarush.test.level20.lesson10.home05;
+
+import java.io.*;
+import java.util.logging.Logger;
+
+/* Сериализуйте Person
+Сериализуйте класс Person стандартным способом. При необходимости поставьте полям модификатор transient.
+*/
+public class Solution  {
+    public static void main(String[] args) throws IOException {
+        String path = "/windows/Файлы/Idea/JavaRushHomeWork/src/com/javarush/test/level20/lesson10/home05/test";
+        Person p = new Person("serg","qwerty","kiev",Sex.FEMALE);
+        p.writeObject(new ObjectOutputStream(new FileOutputStream(path)));
+
+    }
+
+    public static class Person implements Serializable {
+        String firstName;
+        String lastName;
+        transient String fullName;
+        final String greetingString;
+        String country;
+        Sex sex;
+        transient PrintStream outputStream;
+        transient Logger logger;
+
+        public Person() {
+            this.greetingString = "Hello, ";
+        }
+
+        Person(String firstName, String lastName, String country, Sex sex) {
+            this.firstName = firstName;
+            this.lastName = lastName;
+            this.fullName = String.format("%s, %s", lastName, firstName);
+            this.greetingString = "Hello, ";
+            this.country = country;
+            this.sex = sex;
+            this.outputStream = System.out;
+            this.logger = Logger.getLogger(String.valueOf(Person.class));
+        }
+        public void writeObject(OutputStream outputStream){
+            try( ObjectOutputStream out = new ObjectOutputStream(outputStream);)
+            {
+                out.writeObject(this.firstName);
+                out.writeObject(this.lastName);
+                out.writeObject(this.country);
+                if(this.sex==sex.MALE){
+                    out.writeInt(1);
+                }else out.writeInt(2);
+                out.flush();
+            }catch (IOException e){/*NOP*/}
+        }
+
+        public void readObject(InputStream inputStream){
+            try( ObjectInputStream in = new ObjectInputStream(inputStream);)
+            {
+                firstName=(String)in.readObject();
+                lastName= (String) in.readObject();
+                fullName =  String.format("%s, %s", lastName, firstName);
+                country= (String) in.readObject();
+                int s = (int)in.readInt();
+                if(s==1){
+                    this.sex=sex.MALE;
+                }else sex=sex.FEMALE;
+                outputStream=System.out;
+                this.logger = Logger.getLogger(String.valueOf(Person.class));
+            }catch (IOException e){/*NOP*/} catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    enum Sex {
+        MALE,
+        FEMALE
+    }
+}
