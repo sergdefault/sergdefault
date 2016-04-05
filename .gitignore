@@ -1,36 +1,28 @@
-/* Мама Мыла Раму. Теперь с большой буквы
-Написать программу, которая вводит с клавиатуры строку текста.
-Программа заменяет в тексте первые буквы всех слов на заглавные.
-Вывести результат на экран.
 
-Пример ввода:
-  мама     мыла раму.
+# Created by https://www.gitignore.io/api/windows,codekit
 
-Пример вывода:
-  Мама     Мыла Раму.
-*/
+### Windows ###
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
 
-public class Solution
-{
-    public static void main(String[] args) throws IOException
-    {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        String s = reader.readLine();
-        String [] res = s.trim().split("\\s+");
-        for (int i = 0; i <res.length ; i++)
-        {
-            char [] myCharArray = res[i].toCharArray ();
-            myCharArray[0]= Character.toUpperCase(myCharArray[0]);
-            res[i]= new String(myCharArray);
+# Folder config file
+Desktop.ini
 
-        }
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
 
-        for (int i = 0; i <res.length ; i++)
-        {
-            System.out.println(res[i]);
-        }
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
 
-    }
+# Windows shortcuts
+*.lnk
 
 
-}
+### CodeKit ###
+# General CodeKit files to ignore
+config.codekit
+/min
